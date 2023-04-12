@@ -8,3 +8,4 @@ chart_studio
 pandas
 numpy
 datetime
+openpyxl

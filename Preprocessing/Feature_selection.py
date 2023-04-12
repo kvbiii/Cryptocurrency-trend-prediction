@@ -12,7 +12,7 @@ class Recursive_feature_selection_CV():
             if(self.estimator == "LGBM"):
                 self.model = LGBMClassifier(random_state=17)
             elif(self.estimator == "LR"):
-                self.model = LogisticRegression(random_state=17)
+                self.model = LogisticRegression(random_state=17, max_iter=5000)
             elif(self.estimator == "SVM"):
                 self.model = svm.SVC(kernel="linear", random_state=17)
             else:

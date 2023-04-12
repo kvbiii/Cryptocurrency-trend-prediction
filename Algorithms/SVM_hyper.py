@@ -21,9 +21,9 @@ class SVM_tuning():
                     test = self.test_lista[kwantyl-1]
                     cross_validation = TimeSeriesSplit(n_splits=5)
                     param = {
-                        'C': trial.suggest_loguniform('C', 0.01, 1),
+                        'C': trial.suggest_float('C', 0.01, 1),
                         'degree': trial.suggest_int('degree', 2, 5),
-                        'gamma': trial.suggest_loguniform('gamma', 0.001, 1),
+                        'gamma': trial.suggestfloat('gamma', 0.001, 1),
                         "kernel": "rbf",
                         "random_state": 17
                     }
