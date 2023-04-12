@@ -14,9 +14,12 @@ Metrics used to evaluate models were: Annualized Return Compounded, Annualized S
 
 # Usage 
 1. Clone repository to chosen folder
+
 `git clone <url>`
-2. In terminal locate Your folder 
-'cd path_to_your_folder'
+2. In terminal locate Your folder
+ 
+`cd path_to_your_folder`
 3. Install dependencies
-'pip install -r requirements.txt'
+
+`pip install -r requirements.txt`
 4. Open main.py file and run it. You have description of each parameter inside main file, thanks which You are able to choose algorithm or cryptocurrency.
