@@ -52,3 +52,14 @@ if __name__ == '__main__':
                 plotting(results_pojedynczy=results_pojedynczy, kwartyl_pojedynczy=kwartyl_pojedynczy, results_łączne=results_łączne, kwartyl_łączne=kwartyl_łączne, results_base=results_base, name=krypto, nazwa_estymatora=estimator)
             else:
                 plotting(results_pojedynczy=None, kwartyl_pojedynczy=None, results_łączne=results_łączne, kwartyl_łączne=kwartyl_łączne, results_base=results_base, name=krypto, nazwa_estymatora=estimator)
+    """
+    Above I created a list of all datasets and estimators but if You would like to see performance for chosen data and algorithm you can simply run code below:
+    estimator = chosen_estimator: "RF", "LR", "SVM", "LGBM", "LSTM"
+    krypto = chosen_krypto: "bitcoin", "bitcoin_dodatek", "ethereum", "ethereum_dodatek",  
+    results_łączne, kwartyl_łączne, results_base=main(df=pd.read_csv("Data/licencjat_{}_7.csv".format(krypto), index_col=0), selekcja="łączne", name=krypto, number_of_folds=3, lista_kwantyli=[25, 50, 75, 100], estimator=estimator, timesteps = 30, num_trials=50)
+    if(estimator != "LSTM"):
+        results_pojedynczy, kwartyl_pojedynczy, results_base=main(df=pd.read_csv("Data/licencjat_{}_7.csv".format(krypto), index_col=0), selekcja="pojedyncze", name=krypto, number_of_folds=3, lista_kwantyli=[25, 50, 75, 100], estimator=estimator, timesteps = 30, num_trials=50)
+        plotting(results_pojedynczy=results_pojedynczy, kwartyl_pojedynczy=kwartyl_pojedynczy, results_łączne=results_łączne, kwartyl_łączne=kwartyl_łączne, results_base=results_base, name=krypto, nazwa_estymatora=estimator)
+    else:
+        plotting(results_pojedynczy=None, kwartyl_pojedynczy=None, results_łączne=results_łączne, kwartyl_łączne=kwartyl_łączne, results_base=results_base, name=krypto, nazwa_estymatora=estimator)
+    """
