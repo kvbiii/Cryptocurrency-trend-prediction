@@ -25,17 +25,16 @@ class SequenceDataset(Dataset):
 
 class LSTMClassification(nn.Module):
 
-    def __init__(self, number_of_features, number_of_classes, units, dropout, activation_function):
+    def __init__(self, number_of_features, number_of_classes, units, activation_function):
         super(LSTMClassification, self).__init__()
         self.number_of_features = number_of_features-1
         self.number_of_classes = number_of_classes
         self.units = units
-        self.dropout = dropout
         if(activation_function == "relu"):
             self.activation_function = nn.ReLU()
         else:
             self.activation_function = nn.Tanh()
-        self.lstm = nn.LSTM(input_size=self.number_of_features, hidden_size=self.units,  batch_first=True, dropout=self.dropout)
+        self.lstm = nn.LSTM(input_size=self.number_of_features, hidden_size=self.units,  batch_first=True)
         self.fc = nn.Linear(self.units, number_of_classes)
 
     def forward(self, x):
@@ -60,7 +59,7 @@ class LSTM_tuning():
         self.num_trials = num_trials
         self.batch_size = batch_size
 
-    def fitting(self, train, units, dropout, activation_function, optimizer_name, learning_rate, number_of_epochs, test=None, save_model=False):
+    def fitting(self, train, units, activation_function, optimizer_name, learning_rate, number_of_epochs, test=None, save_model=False):
         self.save_model = save_model
         if(test == None):
             training_len = int(len(train)*0.75)
@@ -74,7 +73,7 @@ class LSTM_tuning():
         train_loader = DataLoader(train_dataset, batch_size=self.batch_size, shuffle=False)
         test_dataset = SequenceDataset(df=data_test,target="TARGET",features=data_test.columns.difference(["TARGET"]), sequence_length=self.timesteps)
         test_loader = DataLoader(test_dataset, batch_size=self.batch_size, shuffle=False)
-        model = LSTMClassification(number_of_features = len(data_train.columns), number_of_classes=1, units=units, dropout=dropout, activation_function=activation_function)
+        model = LSTMClassification(number_of_features = len(data_train.columns), number_of_classes=1, units=units, activation_function=activation_function)
         optimizer = getattr(optim, optimizer_name)(model.parameters(), lr=learning_rate)
         loss_function = nn.BCELoss()
         best_balanced_accuracy_test = 0
@@ -144,20 +143,18 @@ class LSTM_tuning():
                     valid = self.valid_lista[kwantyl-1]
                     test = self.test_lista[kwantyl-1]
                     units = trial.suggest_int('units', 8, 128)
-                    dropout = trial.suggest_float('dropout', 0.0, 0.4)
                     activation_function = trial.suggest_categorical("activation_function", ["relu", "tanh"])
                     optimizer_name = trial.suggest_categorical("optimizer", ["Adam", "RMSprop", "SGD"])
                     learning_rate = trial.suggest_float("learning_rate", 0.0005, 0.1, log=True)
                     balanced_accuracy_inner_folds = []
                     for fold in range(1, self.number_of_folds + 1):
-                        balanced_accuracy_inner_folds.append(self.fitting(train=train[fold], units=units, dropout=dropout, activation_function=activation_function, optimizer_name=optimizer_name, learning_rate=learning_rate, number_of_epochs=20, test=None, save_model=False))
+                        balanced_accuracy_inner_folds.append(self.fitting(train=train[fold], units=units, activation_function=activation_function, optimizer_name=optimizer_name, learning_rate=learning_rate, number_of_epochs=20, test=None, save_model=False))
                 return np.mean(balanced_accuracy_inner_folds)
             study = optuna.create_study(direction="maximize")
             study.optimize(objective_cv, n_trials=self.num_trials)
             study_df = study.trials_dataframe().sort_values(by="value", ascending=False)
             print(study_df)
             units_list = study_df.loc[:study_df.index[2], "params_units"].values
-            dropout_list = study_df.loc[:study_df.index[2], "params_dropout"].values
             activation_function_list = study_df.loc[:study_df.index[2], "params_activation_function"].values
             optimizer_name_list = study_df.loc[:study_df.index[2], "params_optimizer"].values
             learning_rate_list = study_df.loc[:study_df.index[2], "params_learning_rate"].values
@@ -170,8 +167,8 @@ class LSTM_tuning():
                     valid = self.valid_lista[kwantyl-1]
                     test = self.test_lista[kwantyl-1]
                     for fold in range(1, self.number_of_folds+1):
-                        valid_score = self.fitting(train=train[fold], units=units_list[i], dropout=dropout_list[i], activation_function=activation_function_list[i], optimizer_name=optimizer_name_list[i], learning_rate=learning_rate_list[i], number_of_epochs=20, test=None, save_model=True)
-                        model = LSTMClassification(number_of_features=len(train[fold].columns), number_of_classes=1, units=units_list[i], dropout=dropout_list[i], activation_function=activation_function_list[i])
+                        valid_score = self.fitting(train=train[fold], units=units_list[i], activation_function=activation_function_list[i], optimizer_name=optimizer_name_list[i], learning_rate=learning_rate_list[i], number_of_epochs=20, test=None, save_model=True)
+                        model = LSTMClassification(number_of_features=len(train[fold].columns), number_of_classes=1, units=units_list[i], activation_function=activation_function_list[i])
                         model.load_state_dict(torch.load('saved_models/temp_best_model.pth'))
                         #Jeżeli chcemy zobaczyć hiperparametry to wystarczy po prostu print(model)
                         scores.append(self.ewaluacja(model=model, test=valid[fold], save_predictions=False))
@@ -189,8 +186,8 @@ class LSTM_tuning():
                 prediction_kwantyl = []
                 for fold in range(1, self.number_of_folds+1):
                     training = pd.concat([train[fold], valid[fold]])
-                    test_score = self.fitting(train=training, units=units_list[best_set], dropout=dropout_list[best_set], activation_function=activation_function_list[best_set], optimizer_name=optimizer_name_list[best_set], learning_rate=learning_rate_list[best_set], number_of_epochs=20, test=None, save_model=True)
-                    globals()[f"model_{kwantyl}_{fold}"] = LSTMClassification(number_of_features=len(training.columns), number_of_classes=1, units=units_list[best_set], dropout=dropout_list[best_set], activation_function=activation_function_list[best_set])
+                    test_score = self.fitting(train=training, units=units_list[best_set], activation_function=activation_function_list[best_set], optimizer_name=optimizer_name_list[best_set], learning_rate=learning_rate_list[best_set], number_of_epochs=20, test=None, save_model=True)
+                    globals()[f"model_{kwantyl}_{fold}"] = LSTMClassification(number_of_features=len(training.columns), number_of_classes=1, units=units_list[best_set], activation_function=activation_function_list[best_set])
                     globals()[f"model_{kwantyl}_{fold}"].load_state_dict(torch.load('saved_models/temp_best_model.pth'))
                     score, preds = self.ewaluacja(model=globals()[f"model_{kwantyl}_{fold}"], test=test[fold], save_predictions=True)
                     prediction_kwantyl.append(preds)
