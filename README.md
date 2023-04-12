@@ -13,13 +13,13 @@ I investigated whether feature selection with RFECV may influence the results.
 Metrics used to evaluate models were: Annualized Return Compounded, Annualized Standard Deviation, Maximum drawdown and Information Ratio.
 
 # Usage 
-1. Clone repository to chosen folder
-
-`git clone <url>`
-
-2. In terminal locate Your folder
+1. In terminal locate Your folder
  
 `cd path_to_your_folder`
+
+2. Clone repository to chosen folder
+
+`git clone <url>`
 
 3. Install dependencies
 
