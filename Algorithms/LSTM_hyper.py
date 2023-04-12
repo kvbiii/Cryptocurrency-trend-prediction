@@ -1,5 +1,4 @@
 from requirements import *
-#3. Popatrzenie na jakieś bardziej rozbudowane wersje (może dodanie hidden layerów)?
 class SequenceDataset(Dataset):
 
     def __init__(self, df, target, features, sequence_length):
@@ -41,7 +40,7 @@ class LSTMClassification(nn.Module):
         x = self.activation_function(x)
         lstm_out, (h, c) = self.lstm(x)
         logits = self.fc(lstm_out[:,-1])
-        scores = F.sigmoid(logits)
+        scores = torch.sigmoid(logits)
         return scores 
 
 class LSTM_tuning():
@@ -153,7 +152,6 @@ class LSTM_tuning():
             study = optuna.create_study(direction="maximize")
             study.optimize(objective_cv, n_trials=self.num_trials)
             study_df = study.trials_dataframe().sort_values(by="value", ascending=False)
-            print(study_df)
             units_list = study_df.loc[:study_df.index[2], "params_units"].values
             activation_function_list = study_df.loc[:study_df.index[2], "params_activation_function"].values
             optimizer_name_list = study_df.loc[:study_df.index[2], "params_optimizer"].values

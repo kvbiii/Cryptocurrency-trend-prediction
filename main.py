@@ -41,7 +41,7 @@ def main(df, selekcja, name, number_of_folds, lista_kwantyli, estimator, timeste
     return results, kwartyl, results_base
 if __name__ == '__main__':
     kryptos = ["bitcoin", "bitcoin_dodatek", "ethereum", "ethereum_dodatek"]
-    estimators = ["RF", "LR", "SVM", "LGBM", "LSTM"]
+    estimators = ["LGBM", "LR", "SVM", "RF", "LSTM"]
     for krypto in kryptos:
         print(krypto)
         for estimator in estimators:
