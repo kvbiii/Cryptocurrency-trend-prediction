@@ -6,7 +6,7 @@ LGBM Classifier, Logistic Regression, Support Vector Machines, Random Forest Cla
 
 The idea behind this project was to predict next day's price movement for Bitcoin and Ethereum using today's and historical data.
 
-Using Blocked Time Window method a I divided data into three subsets where each included a training, validation and test set.
+Using Blocked Time Window method I divided data into three subsets where each included a training, validation and test set.
 
 I investigated whether feature selection with RFECV may influence the results. 
 
