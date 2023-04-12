@@ -1,0 +1,10 @@
+requests
+optuna
+sklearn
+torch
+lightgbm
+plotly
+chart_studio
+pandas
+numpy
+datetime

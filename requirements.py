@@ -1,12 +1,7 @@
 #Import danych
-from abc import ABC, abstractmethod
 import requests
-from urllib.parse import urlencode
 import time
 import os
-
-#Feature extension
-#Pobieranie danych
 
 #Cross walidacja
 import optuna
@@ -99,22 +94,17 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn import svm
-from xgboost import *
 from lightgbm import *
 import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, TensorDataset, DataLoader
 import torch.nn.functional as F
 import torch.optim as optim
-import absl.logging
-absl.logging.set_verbosity(absl.logging.ERROR)
 from sklearn.preprocessing import LabelEncoder
 
 #Wizualizacja
-import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 import plotly.express as px
-import seaborn as sns
 import plotly
 from chart_studio import plotly
 from plotly import express as px
@@ -134,6 +124,3 @@ from collections import Counter
 from itertools import cycle
 import random
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
-import warnings
-warnings.simplefilter('ignore')
