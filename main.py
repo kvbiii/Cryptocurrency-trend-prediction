@@ -1,12 +1,12 @@
 from requirements import *
-from prepare_data import *
-from Feature_selection import *
-from LGBM_hyper import *
-from Logistic_hyper import *
-from  RandomForest_hyper import *
-from SVM_hyper import *
-from LSTM_hyper import *
-from Base_model import *
+from Preprocessing.prepare_data import *
+from Preprocessing.Feature_selection import *
+from Algorithms.LGBM_hyper import *
+from Algorithms.Logistic_hyper import *
+from Algorithms.SVM_hyper import *
+from Algorithms.RandomForest_hyper import *
+from Algorithms.LSTM_hyper import *
+from Algorithms.Base_model import *
 from plots import *
 
 def main(df, selekcja, name, number_of_folds, lista_kwantyli, estimator, timesteps, num_trials):
@@ -46,9 +46,9 @@ if __name__ == '__main__':
         print(krypto)
         for estimator in estimators:
             print(estimator)
-            results_łączne, kwartyl_łączne, results_base=main(df=pd.read_csv("Data/licencjat_{}_7.csv".format(krypto), index_col=0), selekcja="łączne", name=krypto, number_of_folds=3, lista_kwantyli=[25, 50, 75, 100], estimator=estimator, timesteps = 30, num_trials=12)
+            results_łączne, kwartyl_łączne, results_base=main(df=pd.read_csv("Data/licencjat_{}_7.csv".format(krypto), index_col=0), selekcja="łączne", name=krypto, number_of_folds=3, lista_kwantyli=[25, 50, 75, 100], estimator=estimator, timesteps = 30, num_trials=50)
             if(estimator != "LSTM"):
-                results_pojedynczy, kwartyl_pojedynczy, results_base=main(df=pd.read_csv("Data/licencjat_{}_7.csv".format(krypto), index_col=0), selekcja="pojedyncze", name=krypto, number_of_folds=3, lista_kwantyli=[25, 50, 75, 100], estimator=estimator, timesteps = 30, num_trials=20)
+                results_pojedynczy, kwartyl_pojedynczy, results_base=main(df=pd.read_csv("Data/licencjat_{}_7.csv".format(krypto), index_col=0), selekcja="pojedyncze", name=krypto, number_of_folds=3, lista_kwantyli=[25, 50, 75, 100], estimator=estimator, timesteps = 30, num_trials=50)
                 plotting(results_pojedynczy=results_pojedynczy, kwartyl_pojedynczy=kwartyl_pojedynczy, results_łączne=results_łączne, kwartyl_łączne=kwartyl_łączne, results_base=results_base, name=krypto, nazwa_estymatora=estimator)
             else:
                 plotting(results_pojedynczy=None, kwartyl_pojedynczy=None, results_łączne=results_łączne, kwartyl_łączne=kwartyl_łączne, results_base=results_base, name=krypto, nazwa_estymatora=estimator)
