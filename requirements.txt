@@ -1,6 +1,6 @@
 requests
 optuna
-sklearn
+scikit-learn
 torch
 lightgbm
 plotly

@@ -23,7 +23,7 @@ class SVM_tuning():
                     param = {
                         'C': trial.suggest_float('C', 0.01, 1),
                         'degree': trial.suggest_int('degree', 2, 5),
-                        'gamma': trial.suggestfloat('gamma', 0.001, 1),
+                        'gamma': trial.suggest_float('gamma', 0.001, 1),
                         "kernel": "rbf",
                         "random_state": 17
                     }
