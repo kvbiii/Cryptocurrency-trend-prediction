@@ -1,3 +1,7 @@
+from pathlib import Path
+import sys
+path_root = Path(__file__).parents[1]
+sys.path.append(str(path_root))
 from requirements import *
 class SVM_tuning():
     def __init__(self, train_lista, valid_lista, test_lista, number_of_folds, kwantyle, selekcja,  name, estimator, num_trials):
@@ -12,7 +16,7 @@ class SVM_tuning():
         self.estimator = estimator
         self.num_trials = num_trials
     def hyper_optuna(self):
-       if(self.estimator == self.nazwa_estymatora):
+        if(self.estimator == self.nazwa_estymatora):
             def objective_cv(trial):
                 scores = []
                 for kwantyl in range(1, len(self.kwantyle)+1):

@@ -1,3 +1,7 @@
+from pathlib import Path
+import sys
+path_root = Path(__file__).parents[1]
+sys.path.append(str(path_root))
 from requirements import *
 class Prepare_data():
   def __init__(self, df, number_of_folds):

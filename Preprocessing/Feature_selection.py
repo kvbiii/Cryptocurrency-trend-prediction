@@ -1,3 +1,7 @@
+from pathlib import Path
+import sys
+path_root = Path(__file__).parents[1]
+sys.path.append(str(path_root))
 from requirements import *
 class Recursive_feature_selection_CV():
     def __init__(self, train, valid, test, number_of_folds, kwantyle, estimator, selekcja):

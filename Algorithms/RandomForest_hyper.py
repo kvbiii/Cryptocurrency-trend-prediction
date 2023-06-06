@@ -1,3 +1,7 @@
+from pathlib import Path
+import sys
+path_root = Path(__file__).parents[1]
+sys.path.append(str(path_root))
 from requirements import *
 class RandomForest_tuning():
     def __init__(self, train_lista, valid_lista, test_lista, number_of_folds, kwantyle, selekcja,  name, estimator, num_trials):

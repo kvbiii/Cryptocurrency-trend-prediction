@@ -1,3 +1,7 @@
+from pathlib import Path
+import sys
+path_root = Path(__file__).parents[1]
+sys.path.append(str(path_root))
 from requirements import *
 class Ewaluacja_BaseModel():
     def __init__(self, df, name, number_of_folds):
